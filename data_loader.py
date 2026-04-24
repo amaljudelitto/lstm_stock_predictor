@@ -10,15 +10,19 @@ def load_and_prepare_data(symbol):
     df = add_indicators(df)
     df.dropna(inplace=True)
 
-    scaler = MinMaxScaler()
-    df_scaled = scaler.fit_transform(df[['Close', 'RSI', 'MACD', 'EMA20']])
+    feature_columns = ['Close', 'EMA20', 'RSI', 'MACD']
+    feature_scaler = MinMaxScaler()
+    target_scaler = MinMaxScaler()
+    
+   df_features_scaled = feature_scaler.fit_transform(df[feature_columns])
+    df_target_scaled = target_scaler.fit_transform(df[['Close']])
     
     seq_len = 50
     X, y = [], []
-    for i in range(seq_len, len(df_scaled)):
-        X.append(df_scaled[i - seq_len:i])
-        y.append(df_scaled[i])
+    for i in range(seq_len, len(df_features_scaled)):
+        X.append(df_features_scaled[i - seq_len:i])
+        y.append(df_target_scaled[i][0])
     X, y = np.array(X), np.array(y)
 
     split = int(0.8 * len(X))
-    return df, X[:split], y[:split], X[split:], y[split:], scaler
+    return df, X[:split], y[:split], X[split:], y[split:], target_scaler
