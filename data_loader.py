@@ -11,7 +11,7 @@ def load_and_prepare_data(symbol):
     df.dropna(inplace=True)
 
     scaler = MinMaxScaler()
-    df_scaled = scaler.fit_transform(df[['Close']])
+    df_scaled = scaler.fit_transform(df[['Close', 'RSI', 'MACD', 'EMA20']])
     
     seq_len = 50
     X, y = [], []
