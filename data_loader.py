@@ -14,7 +14,7 @@ def load_and_prepare_data(symbol):
     feature_scaler = MinMaxScaler()
     target_scaler = MinMaxScaler()
     
-   df_features_scaled = feature_scaler.fit_transform(df[feature_columns])
+    df_features_scaled = feature_scaler.fit_transform(df[feature_columns])
     df_target_scaled = target_scaler.fit_transform(df[['Close']])
     
     seq_len = 50
